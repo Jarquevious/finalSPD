@@ -114,7 +114,7 @@ def getComputerMove(board, computerLetter): # TODO: W0621: Redefining name 'comp
 
     """ Here is our algorithm for our Tic Tac Toe AI:
     First, check if we can win in the next move"""
-    for i in range(1, space_numbers):
+    for i in range(len(board)):
         copy = getBoardCopy(board)
         if isSpaceFree(copy, i):
             makeMove(copy, computerLetter, i)
@@ -122,7 +122,7 @@ def getComputerMove(board, computerLetter): # TODO: W0621: Redefining name 'comp
                 return i
 
     """Check if the player could win on their next move, and block them."""
-    for i in range(1, space_numbers):
+    for i in range(1, 10):
         copy = getBoardCopy(board)
         if isSpaceFree(copy, i):
             makeMove(copy, playerLetter, i)
@@ -155,55 +155,57 @@ print('Welcome to Tic Tac Toe!')
     into smaller methods. Use TODO s and the comment above each section as a guide 
     for refactoring.
 """
-
-while True:
-    """Reset the board"""
+def gameOn():
+    while True:
+        """Reset the board"""
+        
+        theBoard = [' '] * space_numbers # TODO: Refactor the magic number in this line (and all of the occurrences of 10 thare are conceptually the same.)
+        
     
-    theBoard = [' '] * space_numbers # TODO: Refactor the magic number in this line (and all of the occurrences of 10 thare are conceptually the same.)
+        playerLetter, computerLetter = inputPlayerLetter()
+
     
-   
-    playerLetter, computerLetter = inputPlayerLetter()
+        turn = whoGoesFirst()
+        print('The ' + turn + ' will go first.')
+        gameIsPlaying = True # TODO: Study how this variable is used. Does it ring a bell? (which refactoring method?) 
+                            #       See whether you can get rid of this 'flag' variable. If so, remove it.
 
-   
-    turn = whoGoesFirst()
-    print('The ' + turn + ' will go first.')
-    gameIsPlaying = True # TODO: Study how this variable is used. Does it ring a bell? (which refactoring method?) 
-                         #       See whether you can get rid of this 'flag' variable. If so, remove it.
-
-    while gameIsPlaying: # TODO: Usually (not always), loops (or their content) are good candidates to be extracted into their own function.
-                         #       Use a meaningful name for the function you choose.
-        if turn == 'player':
-            """ Player’s turn."""
-            drawBoard(theBoard)
-            move = getPlayerMove(theBoard)
-            makeMove(theBoard, playerLetter, move)
-
-            if isWinner(theBoard, playerLetter):
+        while gameIsPlaying: # TODO: Usually (not always), loops (or their content) are good candidates to be extracted into their own function.
+                                #       Use a meaningful name for the function you choose.
+            if turn == 'player':
+                """ Player’s turn."""
                 drawBoard(theBoard)
-                print('Hooray! You have won the game!')
-                break
+                move = getPlayerMove(theBoard)
+                makeMove(theBoard, playerLetter, move)
+
+                if isWinner(theBoard, playerLetter):
+                    drawBoard(theBoard)
+                    print('Hooray! You have won the game!')
+                    break
                 if isBoardFull(theBoard):
                     drawBoard(theBoard)
                     print('The game is a tie!')
                     break
-                    turn = 'computer'
+                turn = 'computer'
 
-        else:
-            """Computer’s turn."""
-            move = getComputerMove(theBoard, computerLetter)
-            makeMove(theBoard, computerLetter, move)
+            else:
+                """Computer’s turn."""
+                move = getComputerMove(theBoard, computerLetter)
+                makeMove(theBoard, computerLetter, move)
 
-            if isWinner(theBoard, computerLetter):
-                drawBoard(theBoard)
-                print('The computer has beaten you! You lose.')
-                gameIsPlaying = False
-            else:     # TODO: is this 'else' necessary?
+                if isWinner(theBoard, computerLetter):
+                    drawBoard(theBoard)
+                    print('The computer has beaten you! You lose.')
+                    gameIsPlaying = False
+                    
                 if isBoardFull(theBoard):
                     drawBoard(theBoard)
                     print('The game is a tie!')
                     break
-                else: # TODO: Is this 'else' necessary?
-                    turn = 'player'
+                        
+                turn = 'player'
 
-    if not playAgain():
-        break
+        if not playAgain():
+            break   
+        
+gameOn()
