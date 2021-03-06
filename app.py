@@ -160,7 +160,11 @@ while True:
     """Reset the board"""
     
     theBoard = [' '] * space_numbers # TODO: Refactor the magic number in this line (and all of the occurrences of 10 thare are conceptually the same.)
+    
+   
     playerLetter, computerLetter = inputPlayerLetter()
+
+   
     turn = whoGoesFirst()
     print('The ' + turn + ' will go first.')
     gameIsPlaying = True # TODO: Study how this variable is used. Does it ring a bell? (which refactoring method?) 
@@ -177,13 +181,11 @@ while True:
             if isWinner(theBoard, playerLetter):
                 drawBoard(theBoard)
                 print('Hooray! You have won the game!')
-                gameIsPlaying = False
-            else:  # TODO: is this 'else' necessary?
+                break
                 if isBoardFull(theBoard):
                     drawBoard(theBoard)
                     print('The game is a tie!')
                     break
-                else:  # TODO: Is this 'else' necessary?
                     turn = 'computer'
 
         else:
